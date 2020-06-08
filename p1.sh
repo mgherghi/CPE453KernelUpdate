@@ -25,7 +25,7 @@ GPGKEYS=~/.gnupg
 ################################################################################
 
 # check installed kernel #######################################################
-InstalledKernel=$(uname -r | cut -d. -f-2) # check installed kernel
+InstalledKernel=$(uname -r) # check installed kernel
 ################################################################################
 
 # install dependencies #########################################################
@@ -114,6 +114,7 @@ fi
 # check to see if kernel is already installed ##################################
 if [[ $InstalledKernel == $V ]]; then
     echo "linux-stable already installed"
+    echo ""
     exit 1
 fi
 ################################################################################
