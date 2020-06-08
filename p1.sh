@@ -145,7 +145,7 @@ fi
 
 # Building the swap ############################################################
 if [ ! -e $FILE ]; then
-    sudo fallocate -l 650M /swapfile && \
+    sudo fallocate -l 550M /swapfile && \
     sudo chmod 600 /swapfile  && \
     sudo mkswap /swapfile  && \
     sudo swapon /swapfile  
