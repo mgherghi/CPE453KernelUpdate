@@ -72,7 +72,7 @@ key="$1"
             TargetDir="$2"
             shift
             ;;
-        *)  Help=true
+        *)  POSITIONAL+=("$1")
             shift
             ;;
     esac
