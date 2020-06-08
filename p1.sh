@@ -134,21 +134,25 @@ if [[ $Dir ]]; then
     mkdir $TargetDir && cd $TargetDir
 else
     TargetDir=$HOME/src/ 
-    mkdir ${TargetDir}
+    if [[ ! -d $TargetDir ]]; then
+        mkdir ${TargetDir}
+    else
+        echo ""
+    fi
 fi
 ################################################################################
 
 # Building the swap ############################################################
-if [ ! -e "$FILE" ]; then
-    sudo fallocate -l 2G /swapfile 
-    sudo chmod 600 /swapfile 
-    sudo mkswap /swapfile 
-    sudo swapon /swapfile
+if [ ! -e $FILE ]; then
+    sudo fallocate -l 650M /swapfile && \
+    sudo chmod 600 /swapfile  && \
+    sudo mkswap /swapfile  && \
+    sudo swapon /swapfile  
 fi
 ################################################################################
 
 # Dracut Check #################################################################
-if [ -e "$DRACUT" ]; then
+if [ -e $DRACUT ]; then
     sudo rm /etc/dracut.conf.d/xen.conf
 fi
 ################################################################################
@@ -169,8 +173,8 @@ if [[ $( ccache --version | grep -c 3.7.8 ) -lt 1 ]]; then
     tar xvf ccache-3.7.8.tar
     cd $TargetDir/ccache-3.7.8
     ./configure
-    make -j2
-    sudo make -j2 install
+    make -j$(nproc)
+    sudo make -j$(nproc) install
 fi
 ################################################################################
 
@@ -189,7 +193,7 @@ if [[ $Git ]]; then
     cd $TargetDir
     git clone --branch v5.7.1 \
         'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git' 
-    cd $TargetDir/linux-stable
+    cd linux-stable
 
     if [[ $(git tag -v v$V 2>&1 \
         | grep -c "Good signature .* \[ultimate\]") -lt 1 ]]; then
@@ -201,9 +205,9 @@ if [[ $Git ]]; then
     
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j2 localmodconfig
-    ccache make -j2
-    sudo make -j2 modules_install
-    sudo make -j2 install
+    ccache make -j$(nproc)
+    sudo make -j$(nproc) modules_install
+    sudo make -j$(nproc) install
 else  #use wget to download kernel###########################################
     #echo "wget"
     cd $TargetDir
@@ -224,10 +228,10 @@ else  #use wget to download kernel###########################################
     cd ${TargetDir}/linux-${V}
 
     #sudo cp /boot/config-`uname -r` .config
-    yes '' | ccache make -j2 localmodconfig
-    ccache make -j2
-    sudo make -j2 modules_install
-    sudo make -j2 install
+    yes '' | ccache make -j$(nproc) localmodconfig
+    ccache make -j$(nproc)
+    sudo make -j$(nproc) modules_install
+    sudo make -j$(nproc) install
 fi
 ################################################################################
 
