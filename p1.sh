@@ -15,7 +15,7 @@ DRACUT=/etc/dracut.conf.d/xen.conf
 ################################################################################
 
 # apps to check for install ####################################################
-pckarr=( autoconf automake binutils bison flex gcc gcc-c++ gdb glibc-devel \ libtool make pkgconf pkgconf-m4 pkgconf-pkg-config redhat-rpm-config \ rpm-build rpm-sign strace asciidoc byacc ctags diffstat git intltool ltrace \ patchutils perl-Fedora-VSP perl-generators pesign source-highlight \ 
+pckarr=( autoconf automake binutils bison flex gcc gcc-c++ gdb glibc-devel \ libtool make pkgconf pkgconf-m4 pkgconf-pkg-config redhat-rpm-config \ rpm-build rpm-sign strace asciidoc byacc ctags diffstat git intltool ltrace \ patchutils perl-Fedora-VSP perl-generators pesign source-highlight \
 systemtap valgrind valgrind-devel cmake expect rpmdevtools rpmlint \
 jq wget perl ncurses-devel make gcc bc bison flex elfutils-libelf-devel \ openssl-devel )
 ################################################################################
@@ -29,12 +29,12 @@ InstalledKernel=$(uname -r) # check installed kernel
 ################################################################################
 
 # install dependencies #########################################################
-sudo yum update -y -q 
+sudo yum update -y -q
 for i in  ${pckarr[*]}
  do
   isinstalled=$(rpm -q $i)
-  if [ !  "$isinstalled" == "package $i is not installed" ]; then 
-    :   
+  if [ !  "$isinstalled" == "package $i is not installed" ]; then
+    :
   else
     sudo yum install $i -y -q
   fi
@@ -134,7 +134,7 @@ fi
 if [[ $Dir ]]; then
     mkdir $TargetDir && cd $TargetDir
 else
-    TargetDir=$HOME/src/ 
+    TargetDir=$HOME/src/
     if [[ ! -d $TargetDir ]]; then
         mkdir ${TargetDir}
     else
@@ -148,7 +148,7 @@ if [ ! -e $FILE ]; then
     sudo fallocate -l 550M /swapfile && \
     sudo chmod 600 /swapfile  && \
     sudo mkswap /swapfile  && \
-    sudo swapon /swapfile  
+    sudo swapon /swapfile
 fi
 ################################################################################
 
@@ -181,7 +181,7 @@ fi
 
 #Hard coding the keys , thank you stackexchange ################################
 if [ ! -d "$GPGKEYS" ]; then
-    gpg2 --locate-keys "torvalds@kernel.org" "gregkh@kernel.org" 
+    gpg2 --locate-keys "torvalds@kernel.org" "gregkh@kernel.org"
     for trusted in "torvalds@kernel.org" "gregkh@kernel.org"; do
         echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key $trusted trust
     done
@@ -193,7 +193,7 @@ if [[ $Git ]]; then
     #echo "git"
     cd $TargetDir
     git clone --branch v5.7.1 \
-        'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git' 
+        'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git'
     cd linux-stable
 
     if [[ $(git tag -v v$V 2>&1 \
@@ -203,7 +203,7 @@ if [[ $Git ]]; then
     else
         echo "Good Source"
     fi
-    
+
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j2 localmodconfig
     ccache make -j$(nproc)
@@ -226,7 +226,8 @@ else  #use wget to download kernel###########################################
     sudo rm *.tar
     sudo rm *.sign
     tar xvf linux-${V}.tar
-    cd ${TargetDir}/linux-${V}
+    cd ${TargetDir}
+    cd linux-${V}
 
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j$(nproc) localmodconfig
