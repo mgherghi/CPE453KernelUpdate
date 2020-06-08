@@ -145,9 +145,9 @@ fi
 
 # Building the swap ############################################################
 if [ ! -e $FILE ]; then
-    sudo fallocate -l 550M /swapfile && \
-    sudo chmod 600 /swapfile  && \
-    sudo mkswap /swapfile  && \
+    sudo fallocate -l 550M /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
     sudo swapon /swapfile
 fi
 ################################################################################
@@ -228,11 +228,14 @@ else  #use wget to download kernel###########################################
     sudo rm *.tar
     sudo rm *.sign
     cd linux-${V}
-
+    echo ""
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j$(nproc) localmodconfig
+    echo ""
     ccache make -j$(nproc)
+    echo ""
     sudo make -j$(nproc) modules_install
+    echo ""
     sudo make -j$(nproc) install
 fi
 ################################################################################
