@@ -188,6 +188,7 @@ if [[ $Git ]]; then
     ccache make -j2
     ccache make -j2 modules
     sudo make -j2 modules_install
+    sudo depmod
     sudo make -j2 install
 else  #use wget to download kernel###########################################
     #echo "wget"
@@ -213,6 +214,7 @@ else  #use wget to download kernel###########################################
     ccache make -j2
     ccache make -j2 modules
     sudo make -j2 modules_install
+    sudo depmod
     sudo make -j2 install
 fi
 ################################################################################
