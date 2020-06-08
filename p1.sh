@@ -72,7 +72,7 @@ key="$1"
             TargetDir="$2"
             shift
             ;;
-        *) POSITIONAL+=("$1")
+        *)  Help=true
             shift
             ;;
     esac
@@ -81,7 +81,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 ################################################################################
 
 ################################################################################
-if [[ $Help ]]; then
+if [[ $Help && $Version ]]; then
     echo "p01 - install current linux stable kernel
     Installs current linux stable kernel source code into given Subdir
     or ~/src/linux-stable by default.  p01 takes a number of options,
@@ -92,6 +92,21 @@ if [[ $Help ]]; then
     -R         Reboot after download and install.
     -D Subdir  Subdir is the fullpath of downloaded stable kernel source
     "
+    exit 0
+elif [[ $Help ]]; then
+    echo "p01 - install current linux stable kernel
+    Installs current linux stable kernel source code into given Subdir
+    or ~/src/linux-stable by default.  p01 takes a number of options,
+    as described below.
+    -g         git clone source from kernel.org instead of wget or curl
+    -v         Version of new stable kernel but does not install it.
+    -h         Help should display options with examples.
+    -R         Reboot after download and install.
+    -D Subdir  Subdir is the fullpath of downloaded stable kernel source
+    "
+    exit 0
+else
+    ;
 fi
 ################################################################################
 
@@ -110,6 +125,7 @@ if [[ $Version ]]; then
     echo $(curl -s https://www.kernel.org/releases.json | \
     jq '.latest_stable.version' -r)
     echo ""
+    exit 0
 fi
 ################################################################################
 
@@ -171,7 +187,7 @@ fi
 if [[ $Git ]]; then
     #echo "git"
     cd $TargetDir
-    git clone --depth 1 --single-branch --branch v$V \
+    git clone --branch v5.7.1 \
         'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git' 
     cd $TargetDir/linux-stable
 
@@ -186,9 +202,7 @@ if [[ $Git ]]; then
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j2 localmodconfig
     ccache make -j2
-    ccache make -j2 modules
     sudo make -j2 modules_install
-    sudo depmod
     sudo make -j2 install
 else  #use wget to download kernel###########################################
     #echo "wget"
@@ -212,9 +226,7 @@ else  #use wget to download kernel###########################################
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j2 localmodconfig
     ccache make -j2
-    ccache make -j2 modules
     sudo make -j2 modules_install
-    sudo depmod
     sudo make -j2 install
 fi
 ################################################################################
