@@ -223,10 +223,10 @@ else  #use wget to download kernel###########################################
     else
         echo "Good Source"
     fi
+
+    tar xvf linux-${V}.tar
     sudo rm *.tar
     sudo rm *.sign
-    tar xvf linux-${V}.tar
-    cd ${TargetDir}
     cd linux-${V}
 
     #sudo cp /boot/config-`uname -r` .config
