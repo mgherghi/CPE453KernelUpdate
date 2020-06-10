@@ -192,7 +192,7 @@ fi
 if [[ $Git ]]; then
     #echo "git"
     cd $TargetDir
-    git clone --branch v5.7.1 \
+    git clone --branch v$V \
         'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git'
     cd linux-stable
 
