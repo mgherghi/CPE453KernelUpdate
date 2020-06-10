@@ -229,10 +229,10 @@ else  #use wget to download kernel###########################################
     sudo rm *.sign
     cd linux-${V}
     echo ""
-    #sudo cp /boot/config-`uname -r` .config
+    sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j$(nproc) localmodconfig
     echo ""
-    ccache make -j$(nproc)
+    ccache make -j$(nproc) 
     echo ""
     sudo make -j$(nproc) modules_install
     echo ""
