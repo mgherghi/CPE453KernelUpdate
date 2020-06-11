@@ -17,7 +17,7 @@ DRACUT=/etc/dracut.conf.d/xen.conf
 # apps to check for install ####################################################
 pckarr=( autoconf automake binutils bison flex gcc gcc-c++ gdb glibc-devel \ libtool make pkgconf pkgconf-m4 pkgconf-pkg-config redhat-rpm-config \ rpm-build rpm-sign strace asciidoc byacc ctags diffstat git intltool ltrace \ patchutils perl-Fedora-VSP perl-generators pesign source-highlight \
 systemtap valgrind valgrind-devel cmake expect rpmdevtools rpmlint \
-jq wget perl ncurses-devel make gcc bc bison flex elfutils-libelf-devel \ openssl-devel )
+jq wget perl ncurses-devel make gcc bc bison flex elfutils-libelf-devel \ libebl openssl-devel )
 ################################################################################
 
 # for checking swapfile ######################################################
