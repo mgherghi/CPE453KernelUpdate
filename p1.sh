@@ -205,11 +205,11 @@ if [[ $Git ]]; then
     fi
 
     #sudo cp /boot/config-`uname -r` .config
-    yes '' | ccache make -j2 localmodconfig
-    ccache make -j$(nproc)
-    ccache make -j$(nproc) modules
-    sudo make -j$(nproc) modules_install
-    sudo depmod
+    yes '' | ccache make -j2 localmodconfig && \
+    ccache make -j$(nproc) && \
+    ccache make -j$(nproc) modules && \
+    sudo make -j$(nproc) modules_install && \
+    sudo depmod && \
     sudo make -j$(nproc) install
 else  #use wget to download kernel###########################################
     #echo "wget"
@@ -232,15 +232,11 @@ else  #use wget to download kernel###########################################
     cd linux-${V}
     echo ""
     #sudo cp /boot/config-`uname -r` .config
-    yes '' | ccache make -j$(nproc) localmodconfig
-    echo ""
-    ccache make -j$(nproc) 
-    echo ""
-    make -j$(nproc) modules
-    echo ""
-    sudo make -j$(nproc) modules_install
-    sudo depmod
-    echo ""
+    yes '' | ccache make -j$(nproc) localmodconfig && \
+    ccache make -j$(nproc) && \
+    ccache make -j$(nproc) modules && \
+    sudo make -j$(nproc) modules_install && \
+    sudo depmod && \
     sudo make -j$(nproc) install
 fi
 ################################################################################
