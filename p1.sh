@@ -207,7 +207,7 @@ if [[ $Git ]]; then
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j2 localmodconfig
     ccache make -j$(nproc)
-    ccache make -j$(nproc) modules
+    #ccache make -j$(nproc) modules
     sudo make -j$(nproc) modules_install
     sudo depmod
     sudo make -j$(nproc) install
@@ -236,8 +236,8 @@ else  #use wget to download kernel###########################################
     echo ""
     ccache make -j$(nproc) 
     echo ""
-    ccache make -j$(nproc) modules
-    echo ""
+    #ccache make -j$(nproc) modules
+    #echo ""
     sudo make -j$(nproc) modules_install
     sudo depmod
     echo ""
