@@ -28,19 +28,6 @@ GPGKEYS=~/.gnupg
 InstalledKernel=$(uname -r) # check installed kernel
 ################################################################################
 
-# install dependencies #########################################################
-sudo yum update -y -q
-for i in  ${pckarr[*]}
- do
-  isinstalled=$(rpm -q $i)
-  if [ !  "$isinstalled" == "package $i is not installed" ]; then
-    :
-  else
-    sudo yum install $i -y -q
-  fi
-done
-################################################################################
-
 #Checks against mainline version ###############################################
 V=$(curl -s https://www.kernel.org/releases.json | \
     jq '.latest_stable.version' -r)
@@ -158,6 +145,19 @@ fi
 if [ -e $DRACUT ]; then
     sudo rm /etc/dracut.conf.d/xen.conf
 fi
+################################################################################
+
+# install dependencies #########################################################
+sudo yum update -y -q
+for i in  ${pckarr[*]}
+ do
+  isinstalled=$(rpm -q $i)
+  if [ !  "$isinstalled" == "package $i is not installed" ]; then
+    :
+  else
+    sudo yum install $i -y -q
+  fi
+done
 ################################################################################
 
 # check for ccache  ############################################################
