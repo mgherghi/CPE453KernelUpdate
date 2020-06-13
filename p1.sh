@@ -24,6 +24,8 @@ jq wget perl ncurses-devel make gcc bc bison flex elfutils-libelf-devel \ openss
 GPGKEYS=~/.gnupg
 ################################################################################
 
+sudo yum install -q jq wget 
+
 # check installed kernel #######################################################
 InstalledKernel=$(uname -r) # check installed kernel
 ################################################################################
