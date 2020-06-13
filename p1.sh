@@ -149,6 +149,8 @@ if [ ! -e $FILE ]; then
     sudo chmod 600 /swapfile
     sudo mkswap /swapfile
     sudo swapon /swapfile
+else
+    sudo swapon /swapfile
 fi
 ################################################################################
 
