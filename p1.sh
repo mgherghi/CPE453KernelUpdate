@@ -163,20 +163,20 @@ done
 ################################################################################
 
 # check for ccache  ############################################################
-if [[ $( ccache --version | grep -c 3.7.8 ) -lt 1 ]]; then
+if [[ $( ccache --version | grep -c 3.7.11 ) -lt 1 ]]; then
     cd $TargetDir
-    wget "https://github.com/ccache/ccache/releases/download/v3.7.8/ccache-3.7.8.tar.xz"
-    wget "https://github.com/ccache/ccache/releases/download/v3.7.8/ccache-3.7.8.tar.xz.asc"
+    wget "ttps://github.com/ccache/ccache/releases/download/v3.7.11/ccache-3.7.11.tar.xz"
+    wget "https://github.com/ccache/ccache/releases/download/v3.7.11/ccache-3.7.11.tar.xz.asc"
 
-    if [[ $(gpg --verify ccache-3.7.8.tar.xz.asc ccache-3.7.8.tar.xz 2>&1 \
+    if [[ $(gpg --verify ccache-3.7.11.tar.xz.asc ccache-3.7.11.tar.xz 2>&1 \
         | grep -c "Good signature .* \[ultimate\]") -lt 1 ]]; then
         echo "Error: invalid source"
         exit 1
     else
         echo "Good Source"
     fi
-    tar xvf ccache-3.7.8.tar
-    cd $TargetDir/ccache-3.7.8
+    tar xvf ccache-3.7.11.tar
+    cd $TargetDir/ccache-3.7.11
     ./configure
     make -j$(nproc)
     sudo make -j$(nproc) install
