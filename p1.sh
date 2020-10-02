@@ -134,7 +134,7 @@ fi
 
 # Building the swap ############################################################
 if [ ! -e $FILE ]; then
-    sudo fallocate -l 850M /swapfile
+    sudo fallocate -l 1G /swapfile
     sudo chmod 600 /swapfile
     sudo mkswap /swapfile
     sudo swapon /swapfile
@@ -165,7 +165,7 @@ done
 # check for ccache  ############################################################
 if [[ $( ccache --version | grep -c 3.7.11 ) -lt 1 ]]; then
     cd $TargetDir
-    wget "ttps://github.com/ccache/ccache/releases/download/v3.7.11/ccache-3.7.11.tar.xz"
+    wget "https://github.com/ccache/ccache/releases/download/v3.7.11/ccache-3.7.11.tar.xz"
     wget "https://github.com/ccache/ccache/releases/download/v3.7.11/ccache-3.7.11.tar.xz.asc"
 
     if [[ $(gpg --verify ccache-3.7.11.tar.xz.asc ccache-3.7.11.tar.xz 2>&1 \
@@ -175,7 +175,7 @@ if [[ $( ccache --version | grep -c 3.7.11 ) -lt 1 ]]; then
     else
         echo "Good Source"
     fi
-    tar xvf ccache-3.7.11.tar
+    tar xvf ccache-3.7.11.tar.xz
     cd $TargetDir/ccache-3.7.11
     ./configure
     make -j$(nproc)
@@ -210,10 +210,9 @@ if [[ $Git ]]; then
 
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j2 localmodconfig && \
+    sed -i "s/CONFIG_DEBUG_INFO_BTF/#CONFIG_DEBUG_INFO_BTF/g" .config && \
     ccache make -j$(nproc) && \
-    ccache make -j$(nproc) modules && \
     sudo make -j$(nproc) modules_install && \
-    sudo depmod && \
     sudo make -j$(nproc) install
 else  #use wget to download kernel###########################################
     #echo "wget"
@@ -237,10 +236,9 @@ else  #use wget to download kernel###########################################
     echo ""
     #sudo cp /boot/config-`uname -r` .config
     yes '' | ccache make -j$(nproc) localmodconfig && \
+    sed -i "s/CONFIG_DEBUG_INFO_BTF/#CONFIG_DEBUG_INFO_BTF/g" .config
     ccache make -j$(nproc) && \
-    ccache make -j$(nproc) modules && \
     sudo make -j$(nproc) modules_install && \
-    sudo depmod && \
     sudo make -j$(nproc) install
 fi
 ################################################################################
